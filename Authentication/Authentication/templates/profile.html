@@ -1,0 +1,43 @@
+{% extends 'index.html'%}
+{% block content %}
+<h1>User profile</h1>
+<style>
+    table, th, td {
+  border: 1px solid;
+}
+</style>
+<table >
+   
+    <tr>
+        <th>Name:</th>
+        <td>{{profile.name}}</td>
+      </td>
+
+    </tr>
+    <tr>
+        <th>Email:</th>
+        <td>{{profile.email}}</td>
+      </td>
+
+    </tr>
+    <tr>
+        <th>Age:</th>
+        <td>{{profile.age}}</td>
+      </td>
+
+    </tr>
+    <tr>
+        <th>Address:</th>
+        <td>{{profile.address}}</td>
+      </td>
+
+    </tr>
+    <tr>
+        <th>Phone:</th>
+        <td>{{profile.phone}}</td>
+      </td>
+
+    </tr>
+    
+</table>
+{% endblock%}

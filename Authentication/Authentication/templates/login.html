@@ -1,0 +1,36 @@
+{% extends 'index.html'%}
+
+<h1>login</h1>
+
+    
+
+{% block content %}
+{% if page == 'login'%}
+<form method="post">
+    {% csrf_token %}
+    Username: <input type="text" name="username"><br><br>
+    Password: <input type="password" name="pass"><br><br>
+    <input type="submit" value="login">
+    <p><a href="{% url 'register' %}">Register</a></p>
+</form>
+{% else %}
+<form method="post">
+    {% csrf_token %}
+    
+   
+   <table>
+    
+        {% for form in form %}
+      <tr>
+        <th>{{form.label}}</th>
+        <td>{{form}}</td>
+      </tr>
+        {% endfor %}
+   </table>
+
+    <input type="submit" value="Register">
+    <p><a href="{% url 'login' %}">Login</a></p>
+</form>
+{% endif %}
+
+{% endblock%}
