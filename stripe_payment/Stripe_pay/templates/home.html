@@ -1,0 +1,26 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plant a tree</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+    <section>
+      <div class="product">
+        <img src="{%static 'images/save.jpg'%}" alt="img"  height="300px" width="500px"/>
+        <div class="description">
+          <h3>Donate 100 to plant a tree </h3>
+          <h5>Rs.100</h5>
+        </div>
+      </div>
+      <form action="{% url 'create-checkout-session'%}" method="POST">
+        {% csrf_token %}
+        <button type="submit" id="checkout-button">Donate</button>
+      </form>
+    </section>
+  </body>
+</html>

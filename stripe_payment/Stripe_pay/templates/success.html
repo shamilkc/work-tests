@@ -1,0 +1,21 @@
+{% load static%}
+<style>
+    .page{
+        /* border: 1px solid black; */
+            height: 610px;
+            width: 710px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 60px;
+            text-align: center;
+    }
+
+</style>
+
+
+<div class="page">
+    <img src="{% static 'images/accept.png'%}" alt="image not nfound" height="200px" width="200px"><br><br>
+    <h1>Sucessfully paid</h1><br>
+    <p>Thanks for your donation. your help means a lot. you will redirect to the home page</p><br>
+    <p>If you dont redirect <a href="{% url 'home' %}">Click</a></p>
+</div>
