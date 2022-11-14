@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+
+
+
+<body>
+  
+ 
+  <div id="user-view">
+    <style>
+      body {font-family: Arial, Helvetica, sans-serif;}
+      * {box-sizing: border-box;}
+      
+      /* Button used to open the chat form - fixed at the bottom of the page */
+      .open-button {
+        background-color: #555;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        opacity: 0.8;
+        position: fixed;
+        bottom: 23px;
+        right: 28px;
+        width: 280px;
+      }
+      
+      
+      /* The popup chat - hidden by default */
+      #message-send {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        right: 15px;
+        border: 3px solid #141313;
+        z-index: 9;
+        max-width: 300px;
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        
+      
+      
+      }
+      
+      /* Add styles to the form container */
+      #chat-form {
+        max-width: 300px;
+        padding: 10px;
+        background-color: white;
+        
+        
+      }
+      
+      /* Full-width textarea */
+      #messagetext {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px 0;
+        border: none;
+        background: #dfb6b6;
+        resize: none;
+        min-height: 20px;
+      }
+      
+      /* When the textarea gets focus, do something */
+      #messagetext:focus {
+        background-color: rgba(133, 116, 116, 0.836);
+        outline: none;
+      }
+      
+      /* Set a style for the submit/send button */
+      #submit-button {
+        background-color: #04AA6D;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom:10px;
+        opacity: 0.8;
+      }
+      
+      
+      
+      /* Add some hover effects to buttons */
+      #submit-button:hover {
+        opacity: 1;
+      }
+      
+      /* Add a red background color to the cancel button */
+      .cancel {
+        background-color: red;
+        
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom:10px;
+        opacity: 0.8;
+      }
+      
+       #msg-div p span { 
+          background-color: rgb(120, 230, 225);
+          border-radius: 40px; 
+          
+      }
+      #reply-div p span { 
+          background-color: rgb(230, 120, 120);
+          border-radius: 40px; 
+          
+      }
+      
+      
+      
+      </style>
+      <button class="open-button" onclick="openForm()">Lets Chat</button>
+  
+      <input type="hidden" id="logged-in-user" value="{{user.username}}">
+  
+      <div id="message-send">
+          <div id="message-display">
+  
+          </div>
+          <form id="chat-form">
+              <input type="text" name="message" id="messagetext" placeholder="Type here......">
+              <input type="submit" value="send" id="submit-button">
+              <button type="button" class="cancel" onclick="closeForm()">Close</button>
+    
+          </form>
+  
+          
+  
+      </div>
+      
+      <script>
+          let url = `ws://${window.location.host}/ws/socket-server/`
+          const USER_ID = document.getElementById('logged-in-user').value
+          const chatSocket = new WebSocket(url)
+  
+          chatSocket.onmessage = function(e){
+              let data = JSON.parse(e.data)
+              console.log('Data:',data)
+
+              if (USER_ID != 'muham'){
+            
+                if(data.user === 'muham'){
+                    let messages = document.getElementById('message-display')
+                    messages.insertAdjacentHTML('beforeend',`<div id="reply-div" align="left"><p><span>&nbsp&nbsp${data.message}&nbsp&nbsp</span></p></div>`)
+                }
+                
+                else{
+                    let messages = document.getElementById('message-display')
+                    messages.insertAdjacentHTML('beforeend',`<div id="msg-div" align="right"><p><span>&nbsp&nbsp${data.message}&nbsp&nbsp</span></p></div>`)
+                }
+              }else{
+                if(data.user === 'muham'){
+                      let messages = document.getElementById('message-display')
+                      messages.insertAdjacentHTML('beforeend',`<div id="msg-div" align="right"><p><span>&nbsp&nbsp${data.message}&nbsp&nbsp</span></p></div>`)
+                  }
+                  
+                  else{
+                      let messages = document.getElementById('message-display')
+                      messages.insertAdjacentHTML('beforeend',`<div id="reply-div" align="left"><p><span>&nbsp&nbsp${data.message}&nbsp&nbsp</span></p></div>`)
+                  }
+            }
+              
+              
+          }
+          let form = document.getElementById('chat-form')
+          form.addEventListener('submit',(e)=>{
+              e.preventDefault()
+              let message = e.target.message.value
+              chatSocket.send(JSON.stringify({
+                  'message':message,
+                  'sent_by': USER_ID
+              }))
+              form.reset()
+          })
+      </script>
+      <script>
+          function openForm() {
+            document.getElementById("message-send").style.display = "block";
+          }
+          
+          function closeForm() {
+            document.getElementById("message-send").style.display = "none";
+          }
+          </script>
+  </div>
+  
+
+  
+
+</body>
+</html>
