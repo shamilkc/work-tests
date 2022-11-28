@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+
+{% block title %}Product{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="product-detail">
+        <img src="https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg" height="200px" width="200px">
+        <h2>{{product.name}}</h2>
+        <p>{{product.description}}</p>
+        <p><strong>Rs.{{product.price}}</strong></p>
+        <button class="btn btn-primary">Buynow</button>
+    </div>
+    <br>
+<!-- review adding div  showing div -->
+    <div style="border: 1px solid black; margin: 2px;padding: 4px 4px 4px 4px;">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div >
+                <h4>How do you rate the product?</h4>
+                <div class="rating">
+                    
+                    <input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10" title="5"></label>
+                    <input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9" title="4.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8" title="4"></label>
+                    <input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7" title="3.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6" title="3"></label>
+                    <input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5" title="2.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4" title="2"></label>
+                    <input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3" title="1.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2" title="1"></label>
+                    <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
+                
+                </div>
+            </div>
+            <h4>Write your Review here</h4>
+            Review Title:
+            <input type="text" class="form-control" name="title">
+            <br>
+            Review:
+            <textarea class="form-control" name="description" rows="7"></textarea>
+            <br>
+            {% if user.is_authenticated%}
+            <button type="submit" class="btn btn-primary">Submit</button>
+            {% else %}
+            <p style="color: red;">Please login to post review <a href="{% url 'account_login'%}">Login</a></p>
+            {% endif %}
+        </form>
+    </div>
+
+<!-- review showing div -->
+    <div style="border: 1px solid black; margin: 2px;padding: 4px 4px 4px 4px;">
+        <h4>Customer Reviews</h4>
+        {%for review in product_reviews%}
+        <div style="border: 1px solid rgb(60, 216, 86); margin: 2px;padding: 4px 4px 4px 4px;">
+            <div class="rating-star">
+                <span>
+                    <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %} fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %} fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %} fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %} fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %} fa-3x" aria-hidden="true"></i>
+                </span>
+            </div>
+            <h2>{{review.title}}</h2>
+            <p>{{review.description}}</p>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+
+{% endblock %}
